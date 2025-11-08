@@ -1,12 +1,19 @@
 # Python
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+.Python
+env/
 venv/
-.env
+.venv/
 
-# Node.js
+# Node
 node_modules/
 npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.DS_Store
 
 # Database
 *.db
@@ -14,12 +21,8 @@ npm-debug.log*
 
 # Logs
 *.log
-app.log
+logs/
 
-# OS
-.DS_Store
-Thumbs.db
-
-# IDE
-.vscode/
-.idea/
+# Environment
+.env
+.env.local
