@@ -3,7 +3,6 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import os
 
-# Use environment variable with fallback
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./todos.db")
 
 engine = create_engine(

@@ -13,8 +13,10 @@ export const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
+    console.log('Token found:', token); // Debug log
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
+      console.log('Authorization header set:', config.headers.Authorization); // Debug log
     }
     return config;
   },
@@ -28,6 +30,7 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
+      console.log('401 error - removing token');
       localStorage.removeItem('token');
       window.location.href = '/login';
     }

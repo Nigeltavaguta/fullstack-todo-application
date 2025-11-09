@@ -1,17 +1,18 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
-from ..database import get_db
-from ..models.user import User
-from ..utils.auth import get_password_hash, verify_password, create_access_token
-from ..utils.logger import logger
+from typing import Optional  
+from database import get_db
+from models.user import User
+from utils.auth import get_password_hash, verify_password, create_access_token
+from utils.logger import logger
 
 router = APIRouter()
 
 class UserRegister(BaseModel):
     username: str
     password: str
-    email: str = None
+    email: Optional[str] = None
 
 class UserLogin(BaseModel):
     username: str
@@ -57,12 +58,20 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
     
     # Find user
     db_user = db.query(User).filter(User.username == user.username).first()
-    if not db_user or not verify_password(user.password, db_user.hashed_password):
-        logger.warning(f"Login failed - invalid credentials for user: {user.username}")
+    if not db_user:
+        logger.warning(f"Login failed - user not found: {user.username}")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid credentials",
-            headers={"WWW-Authenticate": "Bearer"},
+        )
+    
+    # Explicit conversion to string
+    hashed_password_str = str(db_user.hashed_password)
+    if not verify_password(user.password, hashed_password_str):
+        logger.warning(f"Login failed - invalid password for user: {user.username}")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid credentials",
         )
     
     # Create token

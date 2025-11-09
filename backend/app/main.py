@@ -4,15 +4,13 @@ from fastapi.security import HTTPBearer
 from dotenv import load_dotenv
 import os
 
-# Load environment variables
+
 load_dotenv()
 
-from .routers import auth, protected
-from .database import engine, Base
-from .models.user import User
-from .utils.logger import logger
-
-
+from routers import auth, protected
+from database import engine, Base
+from models.user import User
+from utils.logger import logger
 
 # Create tables
 Base.metadata.create_all(bind=engine)
@@ -24,7 +22,7 @@ app = FastAPI(title="Todo API", version="1.0.0")
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=["http://localhost:3000", "http://localhost:5173"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

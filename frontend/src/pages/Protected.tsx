@@ -70,11 +70,7 @@ export const Protected: React.FC = () => {
         )}
 
         <div className="mt-6 p-4 bg-blue-50 rounded">
-          <h3 className="font-semibold mb-2">🎉 Congratulations!</h3>
-          <p className="text-sm text-gray-600">
-            You have successfully implemented a full-stack application with authentication!
-            All requirements from the competency test have been met.
-          </p>
+          <h3 className="font-semibold mb-2">Logged In!!!</h3>
         </div>
       </div>
     </div>
