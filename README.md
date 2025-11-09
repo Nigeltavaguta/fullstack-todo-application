@@ -32,9 +32,13 @@ python -m venv venv
 venv\Scripts\activate
 pip install -r requirements.txt
 cd app
-python -m uvicorn main:app --reload --port 8000`
+python -m uvicorn main:app --reload --port 8000
 ```
 
 ### frontend
 
-`bash npm run dev`
+```bash
+cd frontend
+npm run dev
+
+```
