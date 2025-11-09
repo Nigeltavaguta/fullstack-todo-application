@@ -1,21 +1,71 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
+import { useAuth } from './hooks/useAuth'
+import { Login } from './pages/Login'
+import { Register } from './pages/Register'
+import { Protected } from './pages/Protected'
+import { LoadingSpinner } from './components/LoadingSpinner'
 
+const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { isAuthenticated, isLoading } = useAuth()
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    )
+  }
+
+  return isAuthenticated ? <>{children}</> : <Navigate to="/login" />
+}
+
+const PublicRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { isAuthenticated, isLoading } = useAuth()
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    )
+  }
+
+  return !isAuthenticated ? <>{children}</> : <Navigate to="/protected" />
+}
 
 function App() {
   return (
-    <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-8 min-h-screen">
-      <h1 className="text-4xl font-bold text-center mb-4">
-        Hello Tailwind CSS v4!
-      </h1>
-      <p className="text-lg text-center">
-        If you see a gradient background, Tailwind v4 is working!
-      </p>
-      <button className="mt-4 bg-white text-blue-600 px-6 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
-        Test Button
-      </button>
-    </div>
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route path="/" element={<Navigate to="/protected" />} />
+          <Route 
+            path="/login" 
+            element={
+              <PublicRoute>
+                <Login />
+              </PublicRoute>
+            } 
+          />
+          <Route 
+            path="/register" 
+            element={
+              <PublicRoute>
+                <Register />
+              </PublicRoute>
+            } 
+          />
+          <Route 
+            path="/protected" 
+            element={
+              <ProtectedRoute>
+                <Protected />
+              </ProtectedRoute>
+            } 
+          />
+        </Routes>
+      </div>
+    </Router>
   )
 }
 
