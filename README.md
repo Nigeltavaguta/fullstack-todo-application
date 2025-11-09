@@ -10,6 +10,12 @@ A complete full-stack application with FastAPI backend and React/TypeScript fron
 - Responsive UI with Tailwind CSS
 - Logging
 
+## Tech Stack
+
+**Backend:** FastAPI, SQLAlchemy, SQLite, JWT, Python-Jose, Passlib, Uvicorn  
+**Frontend:** React 19, TypeScript, Vite, Axios, Tailwind CSS  
+**Authentication:** JWT Tokens, BCrypt Password Hashing
+
 ## Prerequisites
 
 - Python 3.8+
@@ -31,4 +37,4 @@ python -m uvicorn main:app --reload --port 8000`
 
 ### frontend
 
-`run this command in frontend folder -> npm run dev`
+`bash npm run dev`
