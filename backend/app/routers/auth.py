@@ -26,7 +26,7 @@ class Token(BaseModel):
 def register(user: UserRegister, db: Session = Depends(get_db)):
     logger.info(f"Registration attempt for user: {user.username}")
     
-    # Check if user exists
+    # Check if user exists by username
     db_user = db.query(User).filter(User.username == user.username).first()
     if db_user:
         logger.warning(f"Registration failed - username already exists: {user.username}")
@@ -35,11 +35,22 @@ def register(user: UserRegister, db: Session = Depends(get_db)):
             detail="Username already registered"
         )
     
+    user_email = user.email if user.email and user.email.strip() else None
+    
+    if user_email:
+        email_user = db.query(User).filter(User.email == user_email).first()
+        if email_user:
+            logger.warning(f"Registration failed - email already exists: {user_email}")
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Email already registered"
+            )
+    
     # Create new user
     hashed_password = get_password_hash(user.password)
     db_user = User(
         username=user.username,
-        email=user.email,
+        email=user_email,  
         hashed_password=hashed_password
     )
     db.add(db_user)
@@ -51,6 +62,32 @@ def register(user: UserRegister, db: Session = Depends(get_db)):
     logger.info(f"User registered successfully: {user.username}")
     
     return {"access_token": access_token, "token_type": "bearer"}
+    # logger.info(f"Registration attempt for user: {user.username}"
+    # # Check if user exists
+    # db_user = db.query(User).filter(User.username == user.username).first()
+    # if db_user:
+    #     logger.warning(f"Registration failed - username already exists: {user.username}")
+    #     raise HTTPException(
+    #         status_code=status.HTTP_400_BAD_REQUEST,
+    #         detail="Username already registered"
+    #     )
+    
+    # # Create new user
+    # hashed_password = get_password_hash(user.password)
+    # db_user = User(
+    #     username=user.username,
+    #     email=user.email,
+    #     hashed_password=hashed_password
+    # )
+    # db.add(db_user)
+    # db.commit()
+    # db.refresh(db_user)
+    
+    # # Create token
+    # access_token = create_access_token(data={"sub": user.username})
+    # logger.info(f"User registered successfully: {user.username}")
+    
+    # return {"access_token": access_token, "token_type": "bearer"}
 
 @router.post("/login", response_model=Token)
 def login(user: UserLogin, db: Session = Depends(get_db)):

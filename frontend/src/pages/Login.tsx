@@ -19,7 +19,6 @@ export const Login: React.FC = () => {
       navigate('/protected');
     } catch (err: any) {
       setError(err.response?.data?.detail || 'Invalid credentials');
-    } finally {
       setIsLoading(false);
     }
   };
@@ -30,6 +29,17 @@ export const Login: React.FC = () => {
       [e.target.name]: e.target.value,
     });
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <LoadingSpinner />
+          <p className="mt-4 text-gray-600">Signing you in...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -51,10 +61,11 @@ export const Login: React.FC = () => {
                 name="username"
                 type="text"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-2 focus:z-10 sm:text-sm"
                 placeholder="Username"
                 value={credentials.username}
                 onChange={handleChange}
+                style={{ '--tw-ring-color': '#800000' } as any}
               />
             </div>
             <div>
@@ -62,10 +73,11 @@ export const Login: React.FC = () => {
                 name="password"
                 type="password"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-2 focus:z-10 sm:text-sm"
                 placeholder="Password"
                 value={credentials.password}
                 onChange={handleChange}
+                style={{ '--tw-ring-color': '#800000' } as any}
               />
             </div>
           </div>
@@ -73,17 +85,20 @@ export const Login: React.FC = () => {
           <div>
             <button
               type="submit"
-              disabled={isLoading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+              style={{ backgroundColor: '#800000', '--tw-ring-color': '#800000' } as any}
+              onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#660000'}
+              onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#800000'}
             >
-              {isLoading ? <LoadingSpinner /> : 'Sign in'}
+              Sign in
             </button>
           </div>
 
           <div className="text-center">
             <Link
               to="/register"
-              className="font-medium text-blue-600 hover:text-blue-500"
+              className="font-medium hover:underline"
+              style={{ color: '#800000' }}
             >
               Don't have an account? Sign up
             </Link>

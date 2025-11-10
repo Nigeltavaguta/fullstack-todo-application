@@ -4,6 +4,7 @@ import { Login } from './pages/Login'
 import { Register } from './pages/Register'
 import { Protected } from './pages/Protected'
 import { LoadingSpinner } from './components/LoadingSpinner'
+import { Navbar } from './components/Navbar'
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated, isLoading } = useAuth()
@@ -36,34 +37,37 @@ const PublicRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 function App() {
   return (
     <Router>
-      <div className="App">
-        <Routes>
-          <Route path="/" element={<Navigate to="/protected" />} />
-          <Route 
-            path="/login" 
-            element={
-              <PublicRoute>
-                <Login />
-              </PublicRoute>
-            } 
-          />
-          <Route 
-            path="/register" 
-            element={
-              <PublicRoute>
-                <Register />
-              </PublicRoute>
-            } 
-          />
-          <Route 
-            path="/protected" 
-            element={
-              <ProtectedRoute>
-                <Protected />
-              </ProtectedRoute>
-            } 
-          />
-        </Routes>
+      <div className="min-h-screen bg-gray-50">
+        <Navbar />
+        <main>
+          <Routes>
+            <Route path="/" element={<Navigate to="/protected" />} />
+            <Route 
+              path="/login" 
+              element={
+                <PublicRoute>
+                  <Login />
+                </PublicRoute>
+              } 
+            />
+            <Route 
+              path="/register" 
+              element={
+                <PublicRoute>
+                  <Register />
+                </PublicRoute>
+              } 
+            />
+            <Route 
+              path="/protected" 
+              element={
+                <ProtectedRoute>
+                  <Protected />
+                </ProtectedRoute>
+              } 
+            />
+          </Routes>
+        </main>
       </div>
     </Router>
   )

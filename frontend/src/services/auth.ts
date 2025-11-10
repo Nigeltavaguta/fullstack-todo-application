@@ -6,7 +6,7 @@ export const authService = {
     const response = await api.post<AuthResponse>('/register', credentials);
     if (response.data.access_token) {
       localStorage.setItem('token', response.data.access_token);
-      console.log('Token stored after registration:', response.data.access_token); // Debug
+      console.log('Token stored after registration:', response.data.access_token); 
     }
     return response.data;
   },
@@ -15,7 +15,7 @@ export const authService = {
     const response = await api.post<AuthResponse>('/login', credentials);
     if (response.data.access_token) {
       localStorage.setItem('token', response.data.access_token);
-      console.log('Token stored after login:', response.data.access_token); // Debug
+      console.log('Token stored after login:', response.data.access_token); 
     }
     return response.data;
   },
@@ -26,18 +26,18 @@ export const authService = {
 
   getToken(): string | null {
     const token = localStorage.getItem('token');
-    console.log('Retrieved token:', token); // Debug
+    console.log('Retrieved token:', token); 
     return token;
   },
 
   isAuthenticated(): boolean {
     const authenticated = !!localStorage.getItem('token');
-    console.log('Is authenticated:', authenticated); // Debug
+    console.log('Is authenticated:', authenticated); 
     return authenticated;
   },
 
   async checkProtected(): Promise<ProtectedResponse> {
-    console.log('Making protected request...'); // Debug
+    console.log('Making protected request...');
     const response = await api.get<ProtectedResponse>('/protected');
     return response.data;
   }

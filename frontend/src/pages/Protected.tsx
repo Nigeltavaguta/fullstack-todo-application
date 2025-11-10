@@ -28,11 +28,6 @@ export const Protected: React.FC = () => {
     fetchProtectedData();
   }, [navigate]);
 
-  const handleLogout = () => {
-    authService.logout();
-    navigate('/login');
-  };
-
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -42,16 +37,10 @@ export const Protected: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 pt-40 lg:px-8">
       <div className="max-w-md mx-auto bg-white rounded-lg shadow-md p-6">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">Protected Route</h1>
-          <button
-            onClick={handleLogout}
-            className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          >
-            Logout
-          </button>
+          <h1 className="text-2xl font-bold text-gray-900">Protected Dashboard</h1>
         </div>
 
         {error && (
@@ -69,8 +58,11 @@ export const Protected: React.FC = () => {
           </div>
         )}
 
-        <div className="mt-6 p-4 bg-blue-50 rounded">
-          <h3 className="font-semibold mb-2">Logged In!!!</h3>
+        <div 
+          className="mt-6 p-4 rounded border"
+          style={{ backgroundColor: '#fdf2f2', borderColor: '#800000' }}
+        >
+          <h3 className="font-semibold mb-2" style={{ color: '#800000' }}>Authentication Successful!</h3>
         </div>
       </div>
     </div>
